@@ -1,9 +1,9 @@
-import VideoGenerator from "@/components/VideoGenerator";
+import LandingPage from "@/components/LandingPage";
 
 export default function Home() {
   return (
     <div>
-      <VideoGenerator></VideoGenerator>
+      <LandingPage></LandingPage>
     </div>
   );
 }

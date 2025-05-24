@@ -2,7 +2,7 @@ import { GithubIcon, Twitter, Linkedin, YoutubeIcon } from 'lucide-react';
 
 export default function Footer() {
     return (
-        <footer className="bg-gray-50 border-t border-gray-200 mt-12">
+        <footer className="bg-gray-50 border-t border-gray-200">
             <div className="max-w-7xl mx-auto px-4 py-8">
                 <div className="flex flex-col md:flex-row justify-between items-center">
                     <div className="flex items-center space-x-2 mb-4 md:mb-0">
@@ -25,8 +25,7 @@ export default function Footer() {
 
                 <div className="mt-8 pt-8 border-t border-gray-200 text-center text-sm text-gray-500">
                     <p>© {new Date().getFullYear()} Video Insight Generator. All rights reserved.</p>
-                    <p className="mt-2">Powered by Next.js and AI magic.</p>
-                    <p className="mt-2">Developed By Arun Kumar</p>
+                    <p className="mt-1">Developed By Arun Kumar</p>
                 </div>
             </div>
         </footer>

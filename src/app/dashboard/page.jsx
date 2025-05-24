@@ -1,11 +1,11 @@
 "use client";
 import { Loader, YoutubeIcon, Wand2, Sparkles } from 'lucide-react';
 import { useState, useEffect } from 'react';
-import { Input } from './ui/input';
-import { Textarea } from './ui/textarea';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from './ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { generateWithFallback } from '@/gemini/data';
-import { Button } from './ui/button';
+import { Button } from '@/components/ui/button';
+import { Textarea } from '@/components/ui/textarea';
+import { Input } from '@/components/ui/input';
 
 export default function VideoGenerator() {
     const [url, setUrl] = useState('');
