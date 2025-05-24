@@ -1,6 +1,6 @@
 "use client";
-import { Loader2, YoutubeIcon, Wand2, Sparkles } from 'lucide-react';
-import { useState } from 'react';
+import { Loader, YoutubeIcon, Wand2, Sparkles } from 'lucide-react';
+import { useState, useEffect } from 'react';
 import { Input } from './ui/input';
 import { Textarea } from './ui/textarea';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from './ui/card';
@@ -13,6 +13,47 @@ export default function VideoGenerator() {
     const [response, setResponse] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
+    const [loadingMessage, setLoadingMessage] = useState('');
+    const [loadingStep, setLoadingStep] = useState(0);
+    const [isMessageVisible, setIsMessageVisible] = useState(true);
+
+    const loadingMessages = [
+        "Analyzing video content...",
+        "Generating response...",
+        "Processing video transcript...",
+        "Almost there...",
+        "Finalizing insights..."
+    ];
+
+    useEffect(() => {
+        let interval;
+        let timeout;
+
+        if (isLoading) {
+            // Set initial message
+            setLoadingMessage(loadingMessages[0]);
+
+            // Rotate through messages every 3 seconds with fade effect
+            interval = setInterval(() => {
+                // Start fade out
+                setIsMessageVisible(false);
+
+                // After fade out completes, change message and fade in
+                timeout = setTimeout(() => {
+                    setLoadingStep(prev => (prev + 1) % loadingMessages.length);
+                    setLoadingMessage(loadingMessages[(loadingStep + 1) % loadingMessages.length]);
+                    setIsMessageVisible(true);
+                }, 300); // Matches the transition duration
+            }, 3000);
+        } else {
+            setLoadingStep(0);
+        }
+
+        return () => {
+            clearInterval(interval);
+            clearTimeout(timeout);
+        };
+    }, [isLoading, loadingStep]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -20,6 +61,7 @@ export default function VideoGenerator() {
             setError('Please provide both a YouTube URL and a prompt');
             return;
         }
+        setError('');
         fetchSummary(url, prompt);
     };
 
@@ -28,7 +70,6 @@ export default function VideoGenerator() {
             setIsLoading(true);
             const result = await generateWithFallback(url, prompt);
             setResponse(result);
-            setIsLoading(false);
         } catch (e) {
             console.error(e.message);
             setResponse("Something went wrong.");
@@ -91,7 +132,7 @@ export default function VideoGenerator() {
                         <Button type="submit" disabled={isLoading} className="w-full">
                             {isLoading ? (
                                 <>
-                                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                    <Loader className="mr-2 h-4 w-4 animate-spin" />
                                     Generating...
                                 </>
                             ) : (
@@ -111,7 +152,9 @@ export default function VideoGenerator() {
                         <div className="h-16 w-16 rounded-full border-4 border-purple-500 border-t-transparent animate-spin"></div>
                         <YoutubeIcon className="h-8 w-8 text-red-600 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" />
                     </div>
-                    <p className="mt-4 text-gray-600">Analyzing video content...</p>
+                    <p className={`mt-4 text-gray-600 transition-opacity duration-300 ${isMessageVisible ? 'opacity-100' : 'opacity-0'}`}>
+                        {loadingMessage}
+                    </p>
                 </div>
             )}
 

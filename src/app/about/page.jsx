@@ -11,7 +11,7 @@ export default function AboutPage() {
                 <div className="w-full md:w-1/3 space-y-6">
                     <div className="relative aspect-square w-full rounded-lg overflow-hidden border">
                         <Image
-                            src="/arun-profile.jpg"
+                            src="/my_image.jpg"
                             alt="Arun Kumar"
                             fill
                             className="object-cover"
